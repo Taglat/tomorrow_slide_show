@@ -1,0 +1,23 @@
+#START {
+  height: 100svh;
+  width: 100%;
+  background: #0000FF;
+  color: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  z-index: 10;
+}
+
+#START h3 {
+  font-size: 88px;
+}
+
+#START p {
+  font-size: 24px;
+}

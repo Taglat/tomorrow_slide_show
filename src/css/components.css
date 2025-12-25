@@ -1,0 +1,53 @@
+.c_btn {
+    font-family: "Press Start 2P", monospace;
+    font-size: 16px;
+
+    padding: 16px 32px;
+    margin-top: 40px;
+
+    background: #00ff88;
+    color: #000;
+
+    border: 4px solid #000;
+    box-shadow:
+        4px 4px 0 #000,
+        8px 8px 0 #00aa55;
+
+    cursor: pointer;
+    text-transform: uppercase;
+
+    image-rendering: pixelated;
+}
+
+.c_btn:hover {
+    transform: translate(4px, 4px);
+    box-shadow:
+        2px 2px 0 #000,
+        4px 4px 0 #00aa55;
+}
+
+.c_btn:active {
+    transform: translate(8px, 8px);
+    box-shadow: none;
+}
+
+.c_controls-btn {
+    padding: 16px 32px;
+
+    background: #00ff88;
+
+    border: 4px solid #000;
+    box-shadow:
+        4px 4px 0 #000,
+        8px 8px 0 #00aa55;
+    cursor: pointer;
+
+    image-rendering: pixelated;
+    animation: pulse 1.5s infinite;
+}
+
+.c_controls-btn svg {
+    width: 34px;
+    height: 34px;
+    fill: currentColor;
+}
