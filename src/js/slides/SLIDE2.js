@@ -3,53 +3,42 @@ import { prepareTitle } from "./utils";
 
 export function SLIDE2({ section }) {
     return new Promise(resolve => {
-        const tl = gsap.timeline({ onComplete: resolve });
+        console.log("SLIDE2");
 
         const title = section.querySelector(".title");
-        const rules = section.querySelectorAll(".rule");
-        const icons = section.querySelectorAll(".icon");
+        const subtitle = section.querySelector(".subtitle");
+        const photos = section.querySelectorAll(".c_photo");
 
         prepareTitle(title);
-
         const chars = title.querySelectorAll(".char");
 
+        // RESET
         gsap.set(chars, { opacity: 0, y: 20 });
-        gsap.set(rules, { opacity: 0, x: -20 });
-        gsap.set(icons, { scale: 0 });
+        gsap.set(subtitle, { opacity: 0, y: 10, visibility: "visible" });
+        gsap.set(photos, { opacity: 0, scale: 0.8 });
 
-        // TITLE
+        const tl = gsap.timeline({ onComplete: resolve });
+
         tl.to(chars, {
             opacity: 1,
             y: 0,
-            stagger: 0.02,
-            duration: 0.3,
-            ease: "steps(3)"
+            stagger: 0.04,
+            duration: 0.4,
+            ease: "steps(4)"
         });
 
-        // RULES
-        tl.to(rules, {
+        tl.to(subtitle, {
             opacity: 1,
-            x: 0,
-            stagger: 0.15,
-            duration: 0.3,
-            ease: "steps(3)"
-        });
+            y: 0,
+            duration: 0.3
+        }, "-=0.2");
 
-        // ICONS
-        tl.to(icons, {
+        tl.to(photos, {
+            opacity: 1,
             scale: 1,
             stagger: 0.15,
-            duration: 0.2,
-            ease: "steps(2)"
-        });
-
-        // PULSE
-        tl.to(".system-rules", {
-            opacity: 0.85,
-            yoyo: true,
-            repeat: 1,
-            duration: 0.15,
-            ease: "steps(2)"
-        });
+            duration: 0.5,
+            ease: "steps(6)"
+        }, "+=0.2");
     });
 }

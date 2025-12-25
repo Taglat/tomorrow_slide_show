@@ -1,19 +1,26 @@
-#SLIDE8 .summary {
-    max-width: 700px;
+#SLIDE8 .future {
+    text-align: center;
 }
 
-#SLIDE8 .stats {
-    list-style: none;
-    margin-top: 40px;
-}
-
-#SLIDE8 .stats li {
-    font-size: 20px;
-    margin-bottom: 16px;
+#SLIDE8 .subtitle {
+    margin-top: 20px;
+    font-size: 14px;
     opacity: 0;
 }
 
-#SLIDE8 .num {
-    color: #00ffcc;
-    text-shadow: 0 0 6px #00ffcc;
+#SLIDE8 .prompt {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    opacity: 0;
+}
+
+#SLIDE8 .arrow {
+    color: #00ff00;
+    text-shadow: 0 0 8px #00ff00;
+}
+
+#SLIDE8 .text {
+    letter-spacing: 2px;
 }

@@ -3,91 +3,89 @@ import { prepareTitle } from "./utils";
 
 export function SLIDE6({ section }) {
     return new Promise(resolve => {
-        const tl = gsap.timeline({
-            onComplete: resolve
-        });
+        console.log("SLIDE6");
+
+        const tl = gsap.timeline({ onComplete: resolve });
 
         const title = section.querySelector(".title");
         const subtitle = section.querySelector(".subtitle");
-        const photos = section.querySelectorAll(".team-photo");
+        const photos = section.querySelectorAll(".c_photo");
+        const bg = section.querySelector(".u_pixel-bg");
 
-        // ─────────────────────────────
-        // PREPARE
-        // ─────────────────────────────
         prepareTitle(title);
-
         const chars = title.querySelectorAll(".char");
 
         if (!chars.length || !photos.length) {
-            console.warn("SLIDE6: missing elements");
+            console.warn("SLIDE7: missing elements");
             resolve();
             return;
         }
 
+        // ─────────────────────────────
         // RESET
-        gsap.set(chars, {
-            opacity: 0,
-            y: 20
-        });
-
-        gsap.set(subtitle, {
-            opacity: 0,
-            scale: 0.8
-        });
+        // ─────────────────────────────
+        gsap.set(chars, { opacity: 0, y: 30 });
+        gsap.set(subtitle, { opacity: 0, scale: 0.7 });
 
         gsap.set(photos, {
-            position: "absolute",
             opacity: 0,
-            scale: 0.6,
-            x: () => gsap.utils.random(-300, 300),
-            y: () => gsap.utils.random(-200, 200),
-            rotation: () => gsap.utils.random(-30, 30)
+            scale: 0.5,
+            rotation: () => gsap.utils.random(-20, 20),
+            x: () => gsap.utils.random(0, window.innerWidth - 200),
+            y: () => gsap.utils.random(0, window.innerHeight - 160)
         });
 
         // ─────────────────────────────
-        // TITLE (быстро, без акцента)
+        // TITLE — резкий вход
         // ─────────────────────────────
         tl.to(chars, {
             opacity: 1,
             y: 0,
-            stagger: 0.015,
+            stagger: 0.01,
             duration: 0.25,
-            ease: "steps(3)"
-        });
-
-        // ─────────────────────────────
-        // CHAOTIC ENTRY (движение)
-        // ─────────────────────────────
-        tl.to(photos, {
-            opacity: 1,
-            scale: 1,
-            rotation: 0,
-            x: () => gsap.utils.random(
-                80,
-                window.innerWidth - 260
-            ),
-            y: () => gsap.utils.random(
-                120,
-                window.innerHeight - 220
-            ),
-            stagger: 0.15,
-            duration: 0.6,
-            ease: "steps(6)"
-        }, "-=0.1");
-
-        // ─────────────────────────────
-        // GATHER (co-op moment)
-        // ─────────────────────────────
-        tl.to(photos, {
-            x: (i) => (i - (photos.length - 1) / 2) * 60,
-            y: 0,
-            stagger: 0.05,
-            duration: 0.4,
             ease: "steps(4)"
         });
 
         // ─────────────────────────────
-        // SUBTITLE (после сборки)
+        // PARTY PHOTOS — взрыв
+        // ─────────────────────────────
+        tl.to(photos, {
+            opacity: 1,
+            scale: 1,
+            stagger: 0.1,
+            duration: 0.4,
+            ease: "steps(6)"
+        }, "-=0.1");
+
+        // ─────────────────────────────
+        // STROBE BACKGROUND (дискотека)
+        // ─────────────────────────────
+        tl.to(bg, {
+            backgroundColor: "#ff00ff",
+            repeat: 6,
+            yoyo: true,
+            duration: 0.08,
+            ease: "steps(1)"
+        }, "-=0.3");
+
+        // ─────────────────────────────
+        // PHOTOS DANCE (ритм)
+        // ─────────────────────────────
+        tl.to(photos, {
+            y: "+=20",
+            rotation: () => gsap.utils.random(-10, 10),
+            stagger: {
+                each: 0.08,
+                from: "random"
+            },
+            duration: 0.2,
+            yoyo: true,
+            repeat: 3,
+            ease: "steps(2)"
+        });
+
+        // ─────────────────────────────
+        // SUBTITLE — после пика
         // ─────────────────────────────
         tl.to(subtitle, {
             opacity: 1,
@@ -97,17 +95,18 @@ export function SLIDE6({ section }) {
         });
 
         // ─────────────────────────────
-        // MICRO IDLE (жизнь)
+        // IDLE PARTY LOOP (жизнь)
         // ─────────────────────────────
         gsap.to(photos, {
-            y: "+=6",
-            yoyo: true,
+            y: "+=10",
+            rotation: () => gsap.utils.random(-5, 5),
+            duration: 0.5,
             repeat: -1,
+            yoyo: true,
             stagger: {
-                each: 0.2,
-                from: "center"
+                each: 0.1,
+                from: "random"
             },
-            duration: 0.6,
             ease: "steps(2)"
         });
     });

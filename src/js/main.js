@@ -13,7 +13,7 @@ import { SLIDE5 } from "./slides/SLIDE5";
 import { SLIDE6 } from "./slides/SLIDE6";
 import { SLIDE7 } from "./slides/SLIDE7";
 import { SLIDE8 } from "./slides/SLIDE8";
-import { SLIDE9 } from "./slides/SLIDE9";
+// import { SLIDE9 } from "./slides/SLIDE9";
 // import { SLIDE10 } from "./slides/SLIDE10";
 import { svgPause, svgPlay } from "./constants";
 
@@ -40,7 +40,7 @@ const slideAnimations = {
     SLIDE6,
     SLIDE7,
     SLIDE8,
-    SLIDE9,
+    // SLIDE9,
     // SLIDE10,
 };
 

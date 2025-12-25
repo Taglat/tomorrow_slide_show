@@ -1,20 +1,5 @@
-#SLIDE6 {
+#SLIDE7 {
     overflow: hidden;
 }
 
-#SLIDE6 .team-field {
-    position: absolute;
-    inset: 0;
-}
-
-#SLIDE6 .team-photo {
-    position: absolute;
-    width: 200px;
-    height: 140px;
-    object-fit: cover;
-
-    border: 3px solid #fff;
-    box-shadow: 4px 4px 0 #000;
-
-    opacity: 0;
-}
+#SLIDE7 .c_photo {}

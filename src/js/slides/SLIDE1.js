@@ -3,11 +3,13 @@ import { prepareTitle } from "./utils";
 
 export function SLIDE1({ section }) {
     return new Promise(resolve => {
+        console.log("SLIDE1");
         const title = section.querySelector(".title");
         const astana = section.querySelector("#astana_hub");
         const tomorrow = section.querySelector("#tomorrow_school");
-        const photos = section.querySelectorAll(".c_photo");
-        const textBlock = section.querySelector(".text-block");
+        const textBlocks = section.querySelectorAll(".text-block");
+        const systemRules = section.querySelector(".system-rules");
+        const rules = section.querySelectorAll(".rule");
 
         // 1️⃣ подготовка текста
         prepareTitle(title);
@@ -21,8 +23,8 @@ export function SLIDE1({ section }) {
             return;
         }
 
-        // 2️⃣ RESET (ЭТО БЫЛО ПРОПУЩЕНО)
-        gsap.set(textBlock, {
+        // 2️⃣ RESET
+        gsap.set(textBlocks[0], {
             opacity: 1,
             visibility: "visible",
             scale: 1
@@ -39,12 +41,20 @@ export function SLIDE1({ section }) {
             rotation: 0
         });
 
-        gsap.set(photos, {
-            opacity: 0,
-            visibility: "visible",
-            scale: 0.5,
-            y: 50
-        });
+        if (systemRules) {
+            gsap.set(systemRules, {
+                opacity: 0,
+                visibility: "visible",
+                y: 30
+            });
+        }
+
+        if (rules.length > 0) {
+            gsap.set(rules, {
+                opacity: 0,
+                x: -20
+            });
+        }
 
         // 3️⃣ TIMELINE
         const tl = gsap.timeline({
@@ -74,31 +84,32 @@ export function SLIDE1({ section }) {
         tl.to({}, { duration: 0.5 });
 
         // ───── Уход текста
-        tl.to(textBlock, {
+        tl.to(textBlocks[0], {
             opacity: 0,
             scale: 0.8,
             duration: 0.4,
             ease: "steps(4)"
         });
 
-        // ───── Фото
-        tl.to(photos, {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            stagger: 0.15,
-            duration: 0.6,
-            ease: "steps(8)"
-        });
+        // ───── Появление системных правил
+        if (systemRules && rules.length > 0) {
+            tl.to(systemRules, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "steps(6)"
+            });
 
-        // ───── Мерцание
-        tl.to(photos, {
-            opacity: 0.85,
-            stagger: 0.05,
-            yoyo: true,
-            repeat: 1,
-            duration: 0.1,
-            ease: "steps(2)"
-        });
+            tl.to(rules, {
+                opacity: 1,
+                x: 0,
+                stagger: 0.1,
+                duration: 0.4,
+                ease: "steps(4)"
+            }, "-=0.3");
+
+            // ───── Пауза для чтения
+            tl.to({}, { duration: 1.5 });
+        }
     });
 }

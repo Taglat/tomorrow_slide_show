@@ -1,15 +1,19 @@
-#SLIDE7 {
-    overflow: hidden;
+#SLIDE7 .summary {
+    max-width: 700px;
 }
 
-#SLIDE7 .party-photo {
-    position: absolute;
-    width: 180px;
-    height: 120px;
-    object-fit: cover;
+#SLIDE7 .stats {
+    list-style: none;
+    margin-top: 40px;
+}
 
-    border: 3px solid #fff;
-    box-shadow: 4px 4px 0 #000;
-
+#SLIDE7 .stats li {
+    font-size: 20px;
+    margin-bottom: 16px;
     opacity: 0;
+}
+
+#SLIDE7 .num {
+    color: #00ffcc;
+    text-shadow: 0 0 6px #00ffcc;
 }

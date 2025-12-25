@@ -3,109 +3,96 @@ import { prepareTitle } from "./utils";
 
 export function SLIDE7({ section }) {
     return new Promise(resolve => {
+        console.log("SLIDE7");
+
         const tl = gsap.timeline({ onComplete: resolve });
 
         const title = section.querySelector(".title");
         const subtitle = section.querySelector(".subtitle");
-        const photos = section.querySelectorAll(".party-photo");
+        const stats = section.querySelectorAll(".stats li");
         const bg = section.querySelector(".u_pixel-bg");
 
         prepareTitle(title);
         const chars = title.querySelectorAll(".char");
 
-        if (!chars.length || !photos.length) {
-            console.warn("SLIDE7: missing elements");
+        if (!chars.length) {
+            console.warn("SLIDE7: title not split");
             resolve();
             return;
         }
 
         // ─────────────────────────────
-        // RESET
+        // RESET (очень спокойно)
         // ─────────────────────────────
-        gsap.set(chars, { opacity: 0, y: 30 });
-        gsap.set(subtitle, { opacity: 0, scale: 0.7 });
-
-        gsap.set(photos, {
+        gsap.set(chars, {
             opacity: 0,
-            scale: 0.5,
-            rotation: () => gsap.utils.random(-20, 20),
-            x: () => gsap.utils.random(0, window.innerWidth - 200),
-            y: () => gsap.utils.random(0, window.innerHeight - 160)
+            y: 10
+        });
+
+        gsap.set(subtitle, {
+            opacity: 0,
+            y: 10
+        });
+
+        gsap.set(stats, {
+            opacity: 0,
+            y: 10
+        });
+
+        gsap.set(bg, {
+            opacity: 0
         });
 
         // ─────────────────────────────
-        // TITLE — резкий вход
+        // BACKGROUND — мягкий рассвет
+        // ─────────────────────────────
+        tl.to(bg, {
+            opacity: 1,
+            duration: 0.8,
+            ease: "none"
+        });
+
+        // ─────────────────────────────
+        // TITLE — медленно, по буквам
         // ─────────────────────────────
         tl.to(chars, {
             opacity: 1,
             y: 0,
-            stagger: 0.01,
-            duration: 0.25,
-            ease: "steps(4)"
-        });
-
-        // ─────────────────────────────
-        // PARTY PHOTOS — взрыв
-        // ─────────────────────────────
-        tl.to(photos, {
-            opacity: 1,
-            scale: 1,
-            stagger: 0.1,
+            stagger: 0.04,
             duration: 0.4,
-            ease: "steps(6)"
-        }, "-=0.1");
-
-        // ─────────────────────────────
-        // STROBE BACKGROUND (дискотека)
-        // ─────────────────────────────
-        tl.to(bg, {
-            backgroundColor: "#ff00ff",
-            repeat: 6,
-            yoyo: true,
-            duration: 0.08,
-            ease: "steps(1)"
-        }, "-=0.3");
-
-        // ─────────────────────────────
-        // PHOTOS DANCE (ритм)
-        // ─────────────────────────────
-        tl.to(photos, {
-            y: "+=20",
-            rotation: () => gsap.utils.random(-10, 10),
-            stagger: {
-                each: 0.08,
-                from: "random"
-            },
-            duration: 0.2,
-            yoyo: true,
-            repeat: 3,
             ease: "steps(2)"
-        });
+        }, "-=0.4");
 
         // ─────────────────────────────
-        // SUBTITLE — после пика
+        // SUBTITLE — после паузы
         // ─────────────────────────────
         tl.to(subtitle, {
             opacity: 1,
-            scale: 1,
-            duration: 0.3,
-            ease: "steps(3)"
-        });
+            y: 0,
+            duration: 0.4,
+            ease: "power1.out"
+        }, "+=0.2");
 
         // ─────────────────────────────
-        // IDLE PARTY LOOP (жизнь)
+        // STATS — одно за другим
         // ─────────────────────────────
-        gsap.to(photos, {
-            y: "+=10",
-            rotation: () => gsap.utils.random(-5, 5),
-            duration: 0.5,
-            repeat: -1,
-            yoyo: true,
-            stagger: {
-                each: 0.1,
-                from: "random"
-            },
+        tl.to(stats, {
+            opacity: 1,
+            y: 0,
+            stagger: 0.3,
+            duration: 0.3,
             ease: "steps(2)"
+        }, "+=0.3");
+
+        // ─────────────────────────────
+        // IDLE — еле заметное дыхание
+        // ─────────────────────────────
+        gsap.to(section, {
+            scale: 1.01,
+            duration: 3,
+            yoyo: true,
+            repeat: -1,
+            ease: "sine.inOut"
         });
     });
 }

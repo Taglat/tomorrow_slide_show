@@ -3,38 +3,35 @@ import { prepareTitle } from "./utils";
 
 export function SLIDE8({ section }) {
     return new Promise(resolve => {
+        console.log("SLIDE8");
+
         const tl = gsap.timeline({ onComplete: resolve });
 
         const title = section.querySelector(".title");
         const subtitle = section.querySelector(".subtitle");
-        const stats = section.querySelectorAll(".stats li");
+        const prompt = section.querySelector(".prompt");
+        const arrow = section.querySelector(".arrow");
         const bg = section.querySelector(".u_pixel-bg");
 
         prepareTitle(title);
         const chars = title.querySelectorAll(".char");
 
         if (!chars.length) {
-            console.warn("SLIDE8: title not split");
+            console.warn("SLIDE9: title not split");
             resolve();
             return;
         }
 
         // ─────────────────────────────
-        // RESET (очень спокойно)
+        // RESET
         // ─────────────────────────────
         gsap.set(chars, {
             opacity: 0,
-            y: 10
+            y: 20
         });
 
-        gsap.set(subtitle, {
-            opacity: 0,
-            y: 10
-        });
-
-        gsap.set(stats, {
-            opacity: 0,
-            y: 10
+        gsap.set([subtitle, prompt], {
+            opacity: 0
         });
 
         gsap.set(bg, {
@@ -42,55 +39,52 @@ export function SLIDE8({ section }) {
         });
 
         // ─────────────────────────────
-        // BACKGROUND — мягкий рассвет
+        // BACKGROUND — включение портала
         // ─────────────────────────────
         tl.to(bg, {
             opacity: 1,
-            duration: 0.8,
-            ease: "none"
+            duration: 0.6,
+            ease: "steps(3)"
         });
 
         // ─────────────────────────────
-        // TITLE — медленно, по буквам
+        // TITLE — glitch / сигнал
         // ─────────────────────────────
         tl.to(chars, {
             opacity: 1,
             y: 0,
-            stagger: 0.04,
-            duration: 0.4,
+            stagger: 0.05,
+            duration: 0.25,
             ease: "steps(2)"
-        }, "-=0.4");
+        });
 
         // ─────────────────────────────
-        // SUBTITLE — после паузы
+        // SUBTITLE — мягко
         // ─────────────────────────────
         tl.to(subtitle, {
             opacity: 1,
-            y: 0,
             duration: 0.4,
             ease: "power1.out"
         }, "+=0.2");
 
         // ─────────────────────────────
-        // STATS — одно за другим
+        // PROMPT — появление команды
         // ─────────────────────────────
-        tl.to(stats, {
+        tl.to(prompt, {
             opacity: 1,
-            y: 0,
-            stagger: 0.3,
             duration: 0.3,
             ease: "steps(2)"
         }, "+=0.3");
 
         // ─────────────────────────────
-        // IDLE — еле заметное дыхание
+        // IDLE LOOP — мигание стрелки
         // ─────────────────────────────
-        gsap.to(section, {
-            scale: 1.01,
-            duration: 3,
-            yoyo: true,
+        gsap.to(arrow, {
+            opacity: 0,
+            duration: 0.4,
             repeat: -1,
-            ease: "sine.inOut"
+            yoyo: true,
+            ease: "steps(1)"
         });
     });
 }

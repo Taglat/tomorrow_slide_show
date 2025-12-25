@@ -3,19 +3,22 @@ import { prepareTitle } from "./utils";
 
 export function SLIDE4({ section }) {
     return new Promise(resolve => {
+        console.log("SLIDE4");
+
         const title = section.querySelector(".title");
         const subtitle = section.querySelector(".subtitle");
-        const photos = section.querySelectorAll(".event-photo");
+        const photos = section.querySelectorAll(".c_photo");
 
         prepareTitle(title);
         const chars = title.querySelectorAll(".char");
 
         // RESET
         gsap.set(chars, { opacity: 0, y: 20 });
-        gsap.set(subtitle, { opacity: 0, y: 10 });
+        gsap.set(subtitle, { opacity: 0 });
         gsap.set(photos, {
             opacity: 0,
-            x: -50
+            scale: 0.6,
+            y: 40
         });
 
         const tl = gsap.timeline({ onComplete: resolve });
@@ -32,17 +35,20 @@ export function SLIDE4({ section }) {
         // Subtitle
         tl.to(subtitle, {
             opacity: 1,
-            y: 0,
             duration: 0.3
         }, "-=0.2");
 
-        // Лента фото
+        // Фото — ударной волной
         tl.to(photos, {
             opacity: 1,
-            x: 0,
-            stagger: 0.15,
-            duration: 0.5,
+            scale: 1,
+            y: 0,
+            stagger: {
+                each: 0.08,
+                from: "center"
+            },
+            duration: 0.35,
             ease: "steps(6)"
-        }, "+=0.2");
+        }, "+=0.1");
     });
 }
