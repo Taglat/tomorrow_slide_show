@@ -6,6 +6,8 @@ export function SLIDE9({ section }) {
             onComplete: resolve
         });
 
+
+
         tl.from(section.querySelector(".title"), {
             opacity: 0,
             y: 40,

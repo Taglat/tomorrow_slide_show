@@ -11,10 +11,10 @@ export function SLIDE2({ section }) {
         tl.from(title, {
             opacity: 0,
             y: 40,
-            duration: 10
+            duration: 2
         }).to(title, {
             scale: 10,
-            duration: 6
+            duration: 2
         });
     });
 }

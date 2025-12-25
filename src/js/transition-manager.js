@@ -8,38 +8,44 @@ export class TransitionManager {
         this.state = state;
     }
 
-    async goTo(index) {
+    async goTo(index, { skipAnimation = false } = {}) {
         if (this.state.isTransitioning) return;
 
         this.state.lock();
 
+        // ⬇️ перемещение трека всегда есть
         await gsap.to(this.track, {
             y: -index * window.innerHeight,
-            duration: 1,
+            duration: skipAnimation ? 0.3 : 1,
             ease: "power2.inOut"
         });
 
         this.state.setIndex(index);
 
-        const slide = this.slides[index];
-        const animation = this.animations[slide.id];
+        // ⬇️ если skip — НЕ запускаем анимацию слайда
+        if (!skipAnimation) {
+            const slide = this.slides[index];
+            const animation = this.animations[slide.id];
 
-        if (animation) {
-            await animation({ section: slide });
+            if (animation) {
+                await animation({ section: slide, instant: skipAnimation });
+            }
         }
 
         this.state.unlock();
     }
 
-    next() {
+    next(options) {
         this.goTo(
-            Math.min(this.state.currentIndex + 1, this.slides.length - 1)
+            Math.min(this.state.currentIndex + 1, this.slides.length - 1),
+            options
         );
     }
 
-    prev() {
+    prev(options) {
         this.goTo(
-            Math.max(this.state.currentIndex - 1, 0)
+            Math.max(this.state.currentIndex - 1, 0),
+            options
         );
     }
 }

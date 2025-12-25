@@ -15,6 +15,7 @@ import { SLIDE7 } from "./slides/SLIDE7";
 import { SLIDE8 } from "./slides/SLIDE8";
 import { SLIDE9 } from "./slides/SLIDE9";
 import { SLIDE10 } from "./slides/SLIDE10";
+import { svgPause, svgPlay } from "./constants";
 
 // DOM
 const slides = gsap.utils.toArray(".slide");
@@ -23,7 +24,7 @@ const track = document.querySelector(".slider-track");
 const btnPrev = document.getElementById("prev-btn");
 const btnNext = document.getElementById("next-btn");
 const btnPlay = document.getElementById("play-pause-btn");
-const btnStart = document.getElementById("start-btn");
+
 
 // STATE
 const state = new StateManager();
@@ -58,10 +59,15 @@ const autoplay = new AutoPlayManager({
     delay: 3000,
 });
 
+state.subscribe(({ isTransitioning }) => {
+    btnPrev.disabled = isTransitioning;
+    btnNext.disabled = isTransitioning;
+});
+
 // BUTTONS
 btnNext.addEventListener("click", () => {
-    autoplay.stop();
-    transition.next();
+    autoplay.stop();      // ⏸ стоп autoplay
+    transition.next();    // переход
 });
 
 btnPrev.addEventListener("click", () => {
@@ -70,14 +76,24 @@ btnPrev.addEventListener("click", () => {
 });
 
 btnPlay.addEventListener("click", () => {
-    state.state === "playing"
-        ? autoplay.stop()
-        : autoplay.start();
+    if (state.state === "playing") {
+        autoplay.stop();
+        btnPlay.innerHTML = svgPlay
+    } else {
+        autoplay.start();
+        btnPlay.innerHTML = svgPause;
+    }
 });
 
-btnStart?.addEventListener("click", () => {
-    autoplay.start();
+btnPlay.innerHTML = svgPlay;
+
+state.subscribe(({ state: playerState }) => {
+    btnPlay.innerHTML =
+        playerState === "playing"
+            ? svgPause
+            : svgPlay;
 });
 
 // INIT (первый слайд)
 transition.goTo(0);
+

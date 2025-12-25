@@ -14,3 +14,46 @@
     background-size: 16px 16px;
     pointer-events: none;
 }
+
+.char {
+    display: inline-block;
+    will-change: transform;
+}
+
+.subtitle {
+    margin-top: 24px;
+}
+
+.pixel-snow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.snow-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.bg_image {
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#tomorrow_school {
+    background-image: url("../img/TS\ Logo.png");
+    width: 200px;
+    height: 200px;
+}
+
+#astana_hub {
+    background-image: url("../img/AstanaHub\ Logo.png");
+    width: 200px;
+    height: 200px;
+}
