@@ -1,4 +1,5 @@
 import gsap from "gsap";
+import { prepareTitle } from "./utils";
 
 export function SLIDE1({ section }) {
     return new Promise(resolve => {
@@ -8,41 +9,71 @@ export function SLIDE1({ section }) {
         const photos = section.querySelectorAll(".c_photo");
         const textBlock = section.querySelector(".text-block");
 
-        // Разбиваем заголовок на символы
-        const chars = title.innerText.split("");
-        title.innerHTML = chars
-            .map(char => `<span class="char">${char === " " ? "&nbsp;" : char}</span>`)
-            .join("");
+        // 1️⃣ подготовка текста
+        prepareTitle(title);
 
-        const charEls = title.querySelectorAll(".char");
+        const chars = title.querySelectorAll(".char");
 
+        // ❗ SAFETY: если chars пустой — выходим
+        if (!chars.length) {
+            console.warn("SLIDE1: chars not found");
+            resolve();
+            return;
+        }
+
+        // 2️⃣ RESET (ЭТО БЫЛО ПРОПУЩЕНО)
+        gsap.set(textBlock, {
+            opacity: 1,
+            visibility: "visible",
+            scale: 1
+        });
+
+        gsap.set(chars, {
+            opacity: 0,
+            y: 20
+        });
+
+        gsap.set([astana, tomorrow], {
+            opacity: 0,
+            scale: 0,
+            rotation: 0
+        });
+
+        gsap.set(photos, {
+            opacity: 0,
+            visibility: "visible",
+            scale: 0.5,
+            y: 50
+        });
+
+        // 3️⃣ TIMELINE
         const tl = gsap.timeline({
             onComplete: resolve
         });
 
-        // Заголовок посимвольно
-        tl.from(charEls, {
-            opacity: 0,
-            y: 20,
+        // ───── Заголовок
+        tl.to(chars, {
+            opacity: 1,
+            y: 0,
             stagger: 0.04,
             duration: 0.4,
             ease: "steps(4)"
         });
 
-        // Логотипы
-        tl.from([astana, tomorrow], {
-            opacity: 0,
-            scale: 0,
+        // ───── Логотипы
+        tl.to([astana, tomorrow], {
+            opacity: 1,
+            scale: 1,
             rotation: 360,
             stagger: 0.2,
-            ease: "steps(8)",
-            duration: 0.6
+            duration: 0.6,
+            ease: "steps(8)"
         }, "-=0.2");
 
-        // Пауза
+        // ───── Пауза
         tl.to({}, { duration: 0.5 });
 
-        // Текстовый блок исчезает
+        // ───── Уход текста
         tl.to(textBlock, {
             opacity: 0,
             scale: 0.8,
@@ -50,24 +81,24 @@ export function SLIDE1({ section }) {
             ease: "steps(4)"
         });
 
-        // Фото появляются поочередно
-        tl.from(photos, {
-            opacity: 0,
-            scale: 0.5,
-            y: 50,
+        // ───── Фото
+        tl.to(photos, {
+            opacity: 1,
+            scale: 1,
+            y: 0,
             stagger: 0.15,
-            ease: "steps(8)",
-            duration: 0.6
+            duration: 0.6,
+            ease: "steps(8)"
         });
 
-        // Мерцание
+        // ───── Мерцание
         tl.to(photos, {
             opacity: 0.85,
             stagger: 0.05,
             yoyo: true,
             repeat: 1,
-            ease: "steps(2)",
-            duration: 0.1
+            duration: 0.1,
+            ease: "steps(2)"
         });
     });
 }

@@ -50,3 +50,9 @@
         4px 4px 0 #000;
     image-rendering: pixelated;
 }
+
+.SLIDE1 .text-block,
+.SLIDE1 .c_photo {
+    opacity: 0;
+    visibility: hidden;
+}
