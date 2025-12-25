@@ -1,1 +1,54 @@
-.SLIDE3 {}
+.SLIDE3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 40px;
+}
+
+.SLIDE3 .clubs-header {
+    text-align: center;
+    z-index: 5;
+}
+
+.SLIDE3 .subtitle {
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--px-muted);
+}
+
+.SLIDE3 .club-photos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.SLIDE3 .club-photo {
+    position: relative;
+    border: 3px solid #fff;
+    box-shadow: 4px 4px 0 #000;
+    overflow: hidden;
+}
+
+.SLIDE3 .club-photo img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    image-rendering: pixelated;
+}
+
+.SLIDE3 .club-photo::after {
+    content: attr(data-club);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #000;
+    color: #fff;
+    font-size: 10px;
+    padding: 6px;
+    text-align: center;
+}

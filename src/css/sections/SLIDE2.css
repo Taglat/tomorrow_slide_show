@@ -1,1 +1,34 @@
-.SLIDE2 {}
+#SLIDE2 .system-rules {
+    list-style: none;
+    margin-top: 40px;
+    margin-left: 30px;
+    max-width: 900px;
+}
+
+#SLIDE2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#SLIDE2 .rule {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 20px;
+
+    opacity: 0;
+    transform: translateX(-20px);
+
+    font-size: 18px;
+}
+
+#SLIDE2 .icon {
+    color: #00ff00;
+    text-shadow: 0 0 8px #00ff00;
+}
+
+#SLIDE2 .title {
+    word-break: keep-all;
+    overflow-wrap: normal;
+}

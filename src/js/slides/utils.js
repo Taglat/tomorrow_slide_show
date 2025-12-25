@@ -14,7 +14,7 @@ export function splitTextToSpans(el) {
 export function prepareTitle(title) {
     if (!title || title.dataset.split === "true") return;
 
-    // ❗ textContent работает даже если visibility:hidden
+    // textContent — безопасно для hidden
     const text = title.textContent.trim();
 
     if (!text) {
@@ -22,10 +22,18 @@ export function prepareTitle(title) {
         return;
     }
 
-    title.innerHTML = text
-        .split("")
-        .map(char => `<span class="char">${char === " " ? "&nbsp;" : char}</span>`)
-        .join("");
+    const words = text.split(" ");
+
+    title.innerHTML = words
+        .map(word => {
+            const chars = word
+                .split("")
+                .map(char => `<span class="char">${char}</span>`)
+                .join("");
+
+            return `<span class="word">${chars}</span>`;
+        })
+        .join(`<span class="space">&nbsp;</span>`);
 
     title.dataset.split = "true";
 }

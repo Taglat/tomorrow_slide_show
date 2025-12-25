@@ -57,3 +57,18 @@
     width: 200px;
     height: 200px;
 }
+
+.word {
+    display: inline-block;
+    white-space: nowrap;
+    /* ❗ ключевой момент */
+}
+
+.space {
+    display: inline-block;
+    width: 0.5em;
+}
+
+.char {
+    display: inline-block;
+}
