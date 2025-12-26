@@ -22,6 +22,11 @@ export class AutoPlayManager {
 
         await this.transition.next();
 
+        if (this.state.currentIndex >= this.transition.slides.length - 1) {
+            this.stop();
+            return;
+        }
+
         this.timer = setTimeout(() => {
             this.loop();
         }, this.delay);

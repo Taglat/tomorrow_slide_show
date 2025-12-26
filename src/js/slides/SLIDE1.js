@@ -1,9 +1,10 @@
 import gsap from "gsap";
 import { prepareTitle } from "./utils";
+import { ANIMATIONS } from "../config";
 
 export function SLIDE1({ section }) {
     return new Promise(resolve => {
-        console.log("SLIDE1: Знакомство сTomorrow School");
+        console.log("SLIDE1: Знакомство с Tomorrow School");
         const title = section.querySelector(".title");
         const astana = section.querySelector("#astana_hub");
         const tomorrow = section.querySelector("#tomorrow_school");
@@ -85,9 +86,9 @@ export function SLIDE1({ section }) {
         tl.to(chars, {
             opacity: 1,
             y: 0,
-            stagger: 0.04,
-            duration: 0.4,
-            ease: "steps(4)"
+            stagger: ANIMATIONS.TITLE_STAGGER,
+            duration: ANIMATIONS.TITLE_DURATION,
+            ease: ANIMATIONS.EASE_STEPS_TEXT
         });
 
         // ───── Логотипы
@@ -98,7 +99,7 @@ export function SLIDE1({ section }) {
             stagger: 0.2,
             duration: 0.6,
             ease: "steps(8)"
-        }, "-=0.2");
+        }, ANIMATIONS.SUBTITLE_DELAY);
 
         // ───── Пауза
         tl.to({}, { duration: 0.5 });
@@ -169,7 +170,7 @@ export function SLIDE1({ section }) {
                     y: 0,
                     stagger: 0.6, // "не торопи" -> slow stagger
                     duration: 1.0,
-                    ease: "power2.out"
+                    ease: ANIMATIONS.EASE_OUT
                 });
 
                 // Viewing time
@@ -195,7 +196,7 @@ export function SLIDE1({ section }) {
                     y: 0,
                     stagger: 0.6,
                     duration: 1.0,
-                    ease: "power2.out"
+                    ease: ANIMATIONS.EASE_OUT
                 });
 
                 // Viewing time

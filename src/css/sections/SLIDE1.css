@@ -14,13 +14,15 @@
 }
 
 .SLIDE1 .title {
-    font-size: 32px;
+    text-align: center;
     max-width: 900px;
+    margin: 0 auto;
+    font-size: 32px;
     line-height: 1.8;
     text-shadow:
         2px 2px 0 #ff0000,
         -1px -1px 0 #00ff00;
-    margin-bottom: 30px;
+    margin-bottom: 60px;
 }
 
 .SLIDE1 .char {
@@ -29,8 +31,21 @@
 
 .SLIDE1 .logo {
     display: inline-block;
-    margin: 0 10px;
+    margin: 0;
     filter: drop-shadow(0 0 8px #fff);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#astana_hub {
+    width: 600px;
+    height: 200px;
+}
+
+#tomorrow_school {
+    width: 600px;
+    height: 200px;
 }
 
 /* Photos Grid */

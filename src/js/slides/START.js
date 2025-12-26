@@ -1,4 +1,5 @@
 import gsap from "gsap";
+import { ANIMATIONS } from "../config";
 
 export function START({ section }) {
     return new Promise(resolve => {
@@ -21,9 +22,9 @@ export function START({ section }) {
         tl.from(charEls, {
             opacity: 0,
             y: 20,
-            stagger: 0.04,
-            duration: 0.4,
-            ease: "steps(4)"
+            stagger: ANIMATIONS.TITLE_STAGGER,
+            duration: ANIMATIONS.TITLE_DURATION,
+            ease: ANIMATIONS.EASE_STEPS_TEXT
         })
 
         // TITLE: micro jitter
@@ -42,8 +43,6 @@ export function START({ section }) {
             duration: 0.4,
             ease: "steps(3)"
         }, "");
-
-
 
         // IDLE LOOP (после resolve — autoplay может идти дальше)
         gsap.to(subtitle, {

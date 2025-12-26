@@ -1,12 +1,14 @@
 import gsap from "gsap";
 import { prepareTitle } from "./utils";
+import { ANIMATIONS } from "../config";
 
 export function SLIDE5({ section }) {
     return new Promise(resolve => {
-        console.log("SLIDE5: Тимбилдинг");
+        console.log("SLIDE5: Тимбилдинг (Ticker L->R)");
 
         const title = section.querySelector(".title");
-        const subtitle = section.querySelector(".subtitle");
+        // Subtitle removed from HTML
+        const teamField = section.querySelector(".team-field");
         const photos = section.querySelectorAll(".c_photo");
 
         prepareTitle(title);
@@ -22,72 +24,58 @@ export function SLIDE5({ section }) {
             transformOrigin: "center center"
         });
 
-        gsap.set(subtitle, { opacity: 0, y: 20 });
-
-        // Remove old absolute positioning logic
+        // Photos: Visible but transparent initially
         gsap.set(photos, {
-            opacity: 0,
-            visibility: "visible",
-            scale: 0.5, // Start small
-            rotation: () => gsap.utils.random(-10, 10), // A bit loose before snapping in
-            y: 100
+            autoAlpha: 0,
+            scale: 0.8,
+            rotation: 0
+        });
+
+        // Timer for scrolling
+        gsap.set(teamField, {
+            xPercent: -33.333 // Start shifted left
         });
 
         const tl = gsap.timeline({ onComplete: resolve });
 
         // ─────────────────────────────
-        // 1. TITLE CONSTRUCTION
+        // 1. TITLE
         // ─────────────────────────────
         tl.to(chars, {
             opacity: 1,
             scale: 1,
             y: 0,
-            stagger: 0.03,
-            duration: 0.4,
+            stagger: ANIMATIONS.TITLE_STAGGER,
+            duration: ANIMATIONS.TITLE_DURATION,
             ease: "back.out(1.5)"
         });
 
         // ─────────────────────────────
-        // 2. BUILD THE TEAM (Mosaic Snap)
+        // 2. SHOW STRIP (Fade In)
         // ─────────────────────────────
         tl.to(photos, {
-            opacity: 1,
+            autoAlpha: 1,
             scale: 1,
-            rotation: 0, // Snap to grid
-            y: 0,
-            stagger: {
-                // grid: [3, 4], // Auto grid detection is hard here due to custom layout spans
-                from: "center",
-                amount: 0.6
-            },
-            duration: 0.8,
-            ease: "elastic.out(1, 0.75)"
-        }, "-=0.2");
-
-        // ─────────────────────────────
-        // 3. PROMISE (Subtitle)
-        // ─────────────────────────────
-        tl.to(subtitle, {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
+            stagger: 0.05,
+            duration: 0.5,
             ease: "power2.out"
         }, "-=0.2");
 
         // ─────────────────────────────
-        // 4. HEARTBEAT (Unity)
+        // 3. START TICKER (Left -> Right)
         // ─────────────────────────────
-        gsap.to(photos, {
-            scale: 0.98,
-            duration: 1.5,
-            yoyo: true,
-            repeat: -1,
-            ease: "sine.inOut",
-            stagger: {
-                from: "center",
-                amount: 0.5
-            }
+        // Move from -33.333% to 0% creates rightward motion >>>
+        gsap.to(teamField, {
+            xPercent: 0,
+            ease: "none",
+            duration: 8, // Faster! (was 20)
+            repeat: -1
         });
+
+        // ─────────────────────────────
+        // 4. WATCH TIME
+        // ─────────────────────────────
+        tl.to({}, { duration: 5.0 }); // Let it run for 5 seconds before next slide
 
     });
 }

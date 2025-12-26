@@ -1,14 +1,16 @@
 import gsap from "gsap";
 import { prepareTitle } from "./utils";
+import { ANIMATIONS } from "../config";
 
 export function SLIDE6({ section }) {
     return new Promise(resolve => {
-        console.log("SLIDE6 Праздники");
+        console.log("SLIDE6 Праздники (Ticker R->L)");
 
         const tl = gsap.timeline({ onComplete: resolve });
 
         const title = section.querySelector(".title");
         const subtitle = section.querySelector(".subtitle");
+        const partyPhotos = section.querySelector(".party-photos");
         const photos = section.querySelectorAll(".c_photo");
         const bg = section.querySelector(".u_pixel-bg");
 
@@ -29,85 +31,68 @@ export function SLIDE6({ section }) {
 
         gsap.set(photos, {
             opacity: 0,
-            scale: 0.5,
-            rotation: () => gsap.utils.random(-10, 10),
-            x: 0,
-            y: 0
+            scale: 0.8,
+            rotation: () => gsap.utils.random(-8, 8)
+        });
+
+        // Start at 0 for R->L motion
+        gsap.set(partyPhotos, {
+            xPercent: 0
         });
 
         // ─────────────────────────────
-        // TITLE — резкий вход
+        // 1. TITLE & SUBTITLE (Synced)
         // ─────────────────────────────
         tl.to(chars, {
             opacity: 1,
             y: 0,
             stagger: 0.01,
             duration: 0.25,
-            ease: "steps(4)"
+            ease: ANIMATIONS.EASE_STEPS_TEXT
         });
 
-        // ─────────────────────────────
-        // PARTY PHOTOS — взрыв
-        // ─────────────────────────────
-        tl.to(photos, {
-            opacity: 1,
-            scale: 1,
-            stagger: 0.1,
-            duration: 0.4,
-            ease: "steps(6)"
-        }, "-=0.1");
-
-        // ─────────────────────────────
-        // STROBE BACKGROUND (дискотека)
-        // ─────────────────────────────
-        tl.to(bg, {
-            backgroundColor: "#ff00ff",
-            repeat: 6,
-            yoyo: true,
-            duration: 0.08,
-            ease: "steps(1)"
-        }, "-=0.3");
-
-        // ─────────────────────────────
-        // PHOTOS DANCE (ритм)
-        // ─────────────────────────────
-        tl.to(photos, {
-            y: "+=20",
-            rotation: () => gsap.utils.random(-10, 10),
-            stagger: {
-                each: 0.08,
-                from: "random"
-            },
-            duration: 0.2,
-            yoyo: true,
-            repeat: 3,
-            ease: "steps(2)"
-        });
-
-        // ─────────────────────────────
-        // SUBTITLE — после пика
-        // ─────────────────────────────
         tl.to(subtitle, {
             opacity: 1,
             scale: 1,
-            duration: 0.3,
-            ease: "steps(3)"
-        });
+            duration: ANIMATIONS.SUBTITLE_DURATION,
+            ease: ANIMATIONS.EASE_OUT
+        }, "<0.1"); // Sync tightly
 
         // ─────────────────────────────
-        // IDLE PARTY LOOP (жизнь)
+        // 2. BACKGROUND STROBE (One shot)
         // ─────────────────────────────
-        gsap.to(photos, {
-            y: "+=10",
-            rotation: () => gsap.utils.random(-5, 5),
-            duration: 0.5,
-            repeat: -1,
+        tl.to(bg, {
+            backgroundColor: "#ff00ff",
+            repeat: 5,
             yoyo: true,
-            stagger: {
-                each: 0.1,
-                from: "random"
-            },
-            ease: "steps(2)"
+            duration: 0.05,
+            ease: "steps(1)"
+        }, "-=0.2");
+
+        // ─────────────────────────────
+        // 3. PHOTOS REVEAL
+        // ─────────────────────────────
+        tl.to(photos, {
+            opacity: 1,
+            scale: 1,
+            stagger: 0.05,
+            duration: 0.4,
+            ease: "power2.out"
+        }, "-=0.2");
+
+        // ─────────────────────────────
+        // 4. START TICKER (Right -> Left)
+        // ─────────────────────────────
+        // Move from 0% to -33.333% creates leftward motion <<<
+        gsap.to(partyPhotos, {
+            xPercent: -33.333,
+            ease: "none",
+            duration: 20,
+            repeat: -1
         });
+
+        // Add pause for viewing
+        tl.to({}, { duration: 2.0 });
+
     });
 }

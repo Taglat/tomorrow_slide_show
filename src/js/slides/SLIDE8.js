@@ -1,14 +1,14 @@
 import gsap from "gsap";
 import { prepareTitle } from "./utils";
+import { ANIMATIONS } from "../config";
 
 export function SLIDE8({ section }) {
     return new Promise(resolve => {
-        console.log("SLIDE8 End");
+        console.log("SLIDE8: Happy New Year");
 
         const tl = gsap.timeline({ onComplete: resolve });
 
         const title = section.querySelector(".title");
-        const subtitle = section.querySelector(".subtitle");
         const prompt = section.querySelector(".prompt");
         const arrow = section.querySelector(".arrow");
         const bg = section.querySelector(".u_pixel-bg");
@@ -17,7 +17,7 @@ export function SLIDE8({ section }) {
         const chars = title.querySelectorAll(".char");
 
         if (!chars.length) {
-            console.warn("SLIDE9: title not split");
+            console.warn("SLIDE8: title not split");
             resolve();
             return;
         }
@@ -27,11 +27,14 @@ export function SLIDE8({ section }) {
         // ─────────────────────────────
         gsap.set(chars, {
             opacity: 0,
-            y: 20
+            y: 50,
+            scale: 0.5,
+            color: "#ffffff"
         });
 
-        gsap.set([subtitle, prompt], {
-            opacity: 0
+        gsap.set([prompt], {
+            opacity: 0,
+            y: 20
         });
 
         gsap.set(bg, {
@@ -39,7 +42,7 @@ export function SLIDE8({ section }) {
         });
 
         // ─────────────────────────────
-        // BACKGROUND — включение портала
+        // 1. BACKGROUND
         // ─────────────────────────────
         tl.to(bg, {
             opacity: 1,
@@ -48,36 +51,43 @@ export function SLIDE8({ section }) {
         });
 
         // ─────────────────────────────
-        // TITLE — glitch / сигнал
+        // 2. TITLE (Explosive)
         // ─────────────────────────────
         tl.to(chars, {
             opacity: 1,
             y: 0,
-            stagger: 0.05,
-            duration: 0.25,
-            ease: "steps(2)"
+            scale: 1,
+            stagger: {
+                from: "center",
+                amount: 0.5
+            },
+            duration: 0.8,
+            ease: "elastic.out(1, 0.5)"
+        });
+
+        // Festive Colors Loop
+        gsap.to(chars, {
+            color: gsap.utils.wrap(["#ff0000", "#00ff00", "#ffff00", "#00ffff"]),
+            duration: 0.5,
+            stagger: {
+                each: 0.1,
+                repeat: -1,
+                yoyo: true
+            }
         });
 
         // ─────────────────────────────
-        // SUBTITLE — мягко
-        // ─────────────────────────────
-        tl.to(subtitle, {
-            opacity: 1,
-            duration: 0.4,
-            ease: "power1.out"
-        }, "+=0.2");
-
-        // ─────────────────────────────
-        // PROMPT — появление команды
+        // 4. PROMPT
         // ─────────────────────────────
         tl.to(prompt, {
             opacity: 1,
+            y: 0,
             duration: 0.3,
             ease: "steps(2)"
-        }, "+=0.3");
+        }, "+=0.2");
 
         // ─────────────────────────────
-        // IDLE LOOP — мигание стрелки
+        // 5. LOOP ARROW
         // ─────────────────────────────
         gsap.to(arrow, {
             opacity: 0,

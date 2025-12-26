@@ -1,5 +1,6 @@
 import gsap from "gsap";
 import { prepareTitle } from "./utils";
+import { ANIMATIONS } from "../config";
 
 export function SLIDE2({ section }) {
     return new Promise(resolve => {
@@ -37,16 +38,17 @@ export function SLIDE2({ section }) {
         tl.to(chars, {
             opacity: 1,
             y: 0,
-            stagger: 0.04,
-            duration: 0.4,
-            ease: "steps(4)"
+            stagger: ANIMATIONS.TITLE_STAGGER,
+            duration: ANIMATIONS.TITLE_DURATION,
+            ease: ANIMATIONS.EASE_STEPS_TEXT
         });
 
+        // Fix: Subtitle appears late. Make it appear sooner relative to title start.
         tl.to(subtitle, {
             opacity: 1,
             y: 0,
-            duration: 0.3
-        }, "-=0.2");
+            duration: ANIMATIONS.SUBTITLE_DURATION
+        }, "<0.2");
 
         // ─────────────────────────────
         // SLIDESHOW LOOP
@@ -61,18 +63,13 @@ export function SLIDE2({ section }) {
                     opacity: 1,
                     scale: 1,
                     duration: 0.5,
-                    ease: "power2.out"
+                    ease: ANIMATIONS.EASE_OUT
                 });
 
                 // Wait for viewing
                 tl.to({}, { duration: 3.5 });
 
-                // Hide Card (if not last, or even if last to loop? 
-                // Let's hide all sequentially. User can see "blank" for a moment or next slide comes)
-
-                // If we want a smooth transition, we overlay? 
-                // But simplified: Hide current, then next loop iteration shows next.
-
+                // Hide Card
                 if (!isLast) {
                     tl.to(card, {
                         opacity: 0,
@@ -82,8 +79,7 @@ export function SLIDE2({ section }) {
                         onComplete: () => gsap.set(card, { display: "none" })
                     });
                 } else {
-                    // Last card stays visible until resolve? 
-                    // Or we can create an infinite loop here separate from main TL
+                    // Last card stays visible until resolve
                 }
             });
 

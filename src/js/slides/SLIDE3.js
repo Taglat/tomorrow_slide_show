@@ -1,5 +1,6 @@
 import gsap from "gsap";
 import { prepareTitle } from "./utils";
+import { ANIMATIONS } from "../config";
 
 export function SLIDE3({ section }) {
     return new Promise(resolve => {
@@ -37,22 +38,19 @@ export function SLIDE3({ section }) {
         tl.to(chars, {
             opacity: 1,
             y: 0,
-            stagger: 0.04,
-            duration: 0.4,
-            ease: "steps(4)"
+            stagger: ANIMATIONS.TITLE_STAGGER,
+            duration: ANIMATIONS.TITLE_DURATION,
+            ease: ANIMATIONS.EASE_STEPS_TEXT
         });
 
         tl.to(subtitle, {
             opacity: 1,
             y: 0,
-            duration: 0.3
-        }, "-=0.2");
+            duration: ANIMATIONS.SUBTITLE_DURATION,
+            ease: ANIMATIONS.EASE_OUT
+        }, ANIMATIONS.SUBTITLE_DELAY);
 
         // 2. Deal Cards (Drop them onto stack)
-        // We want the bottom card (last index) to drop first? 
-        // No, we want the stack to build up or just appear?
-        // Let's drop them all staggered.
-
         tl.to(cards, {
             opacity: 1,
             y: 0,
@@ -66,16 +64,11 @@ export function SLIDE3({ section }) {
         });
 
         // 3. Flip Through Loop
-        // Animate top card (index 0) away, then index 1, etc.
-
         cards.forEach((card, i) => {
             // Viewing time
             tl.to({}, { duration: 2.5 });
 
             // If not the very last card, animate it away
-            // Actually, let's animate even the last one to clear, or keep it?
-            // "Viewer want to see photos". 2.5s is good.
-
             const isLast = (i === cards.length - 1);
 
             if (!isLast) {
