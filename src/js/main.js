@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { StateManager } from "./state-manager";
 import { TransitionManager } from "./transition-manager";
 import { AutoPlayManager } from "./auto-play-manager";
+import { AudioController } from "./audio-controller";
 
 import { START } from "./slides/START";
 import { SLIDE1 } from "./slides/SLIDE1";
@@ -13,9 +14,10 @@ import { SLIDE5 } from "./slides/SLIDE5";
 import { SLIDE6 } from "./slides/SLIDE6";
 import { SLIDE7 } from "./slides/SLIDE7";
 import { SLIDE8 } from "./slides/SLIDE8";
-// import { SLIDE9 } from "./slides/SLIDE9";
-// import { SLIDE10 } from "./slides/SLIDE10";
 import { svgPause, svgPlay } from "./constants";
+
+// ASSETS
+import musicUrl from "../mp3/Djo - End of Beginning (Karaoke Version).mp3";
 
 // DOM
 const slides = gsap.utils.toArray(".slide");
@@ -29,6 +31,9 @@ const btnPlay = document.getElementById("play-pause-btn");
 // STATE
 const state = new StateManager();
 
+// AUDIO
+const audio = new AudioController(musicUrl);
+
 // SLIDE → ANIMATION MAP
 const slideAnimations = {
     START,
@@ -40,8 +45,6 @@ const slideAnimations = {
     SLIDE6,
     SLIDE7,
     SLIDE8,
-    // SLIDE9,
-    // SLIDE10,
 };
 
 // TRANSITION
@@ -56,7 +59,7 @@ const transition = new TransitionManager({
 const autoplay = new AutoPlayManager({
     state,
     transition,
-    delay: 3000,
+    delay: 3500, // Small increase for better pacing
 });
 
 state.subscribe(({ isTransitioning }) => {
@@ -78,20 +81,26 @@ btnPrev.addEventListener("click", () => {
 btnPlay.addEventListener("click", () => {
     if (state.state === "playing") {
         autoplay.stop();
-        btnPlay.innerHTML = svgPlay
+        audio.pause();
     } else {
         autoplay.start();
-        btnPlay.innerHTML = svgPause;
+        audio.play();
     }
 });
 
 btnPlay.innerHTML = svgPlay;
 
-state.subscribe(({ state: playerState }) => {
-    btnPlay.innerHTML =
-        playerState === "playing"
-            ? svgPause
-            : svgPlay;
+state.subscribe(({ state: playerState, currentIndex }) => {
+    // Update UI
+    btnPlay.innerHTML = playerState === "playing" ? svgPause : svgPlay;
+
+    // Logic for ending
+    // When autoplay stops naturally at the last slide, the state becomes "paused" 
+    // and currentIndex is slides.length - 1
+    if (playerState === "paused" && currentIndex === slides.length - 1) {
+        console.log("Presentation finished. Fading out music...");
+        audio.fadeOut(5); // 5 second fade out as requested
+    }
 });
 
 // INIT (первый слайд)

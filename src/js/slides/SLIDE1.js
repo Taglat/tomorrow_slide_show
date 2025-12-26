@@ -19,8 +19,10 @@ export function SLIDE1({ section }) {
 
         // 1️⃣ подготовка текста
         prepareTitle(title);
+        if (rulesTitle) prepareTitle(rulesTitle);
 
         const chars = title.querySelectorAll(".char");
+        const ruleChars = rulesTitle ? rulesTitle.querySelectorAll(".char") : [];
 
         // ❗ SAFETY: если chars пустой — выходим
         if (!chars.length) {
@@ -31,50 +33,49 @@ export function SLIDE1({ section }) {
 
         // 2️⃣ RESET
         gsap.set(textBlocks[0], {
-            opacity: 1,
-            visibility: "visible",
+            autoAlpha: 1,
             scale: 1
         });
 
         gsap.set(chars, {
-            opacity: 0,
+            autoAlpha: 0,
             y: 20
         });
 
         gsap.set([astana, tomorrow], {
-            opacity: 0,
+            autoAlpha: 0,
             scale: 0,
             rotation: 0
         });
 
         if (systemRules) {
             gsap.set(systemRules, {
-                opacity: 0,
-                visibility: "visible",
+                autoAlpha: 0,
                 y: 0
             });
         }
 
         if (rulesTitle) {
-            gsap.set(rulesTitle, { opacity: 0, scale: 0.8, y: 20 });
+            gsap.set(ruleChars, { autoAlpha: 0, y: 10 });
         }
 
         if (rules.length > 0) {
             gsap.set(rules, {
-                opacity: 0,
-                x: -50,
-                scale: 0.9
+                autoAlpha: 0,
+                x: -30,
+                y: 20,
+                scale: 0.95
             });
         }
 
-        // RESET PHOTOS
+        // ... photos reset ...
         if (photosGeneral) {
-            gsap.set(photosGeneral, { display: "none", opacity: 0 });
-            gsap.set(photoItemsGeneral, { opacity: 0, y: 20 });
+            gsap.set(photosGeneral, { display: "none", autoAlpha: 0 });
+            gsap.set(photoItemsGeneral, { autoAlpha: 0, y: 20 });
         }
         if (photosStuff) {
-            gsap.set(photosStuff, { display: "none", opacity: 0 });
-            gsap.set(photoItemsStuff, { opacity: 0, y: 20 });
+            gsap.set(photosStuff, { display: "none", autoAlpha: 0 });
+            gsap.set(photoItemsStuff, { autoAlpha: 0, y: 20 });
         }
 
         // 3️⃣ TIMELINE
@@ -84,7 +85,7 @@ export function SLIDE1({ section }) {
 
         // ───── Заголовок
         tl.to(chars, {
-            opacity: 1,
+            autoAlpha: 1,
             y: 0,
             stagger: ANIMATIONS.TITLE_STAGGER,
             duration: ANIMATIONS.TITLE_DURATION,
@@ -93,12 +94,12 @@ export function SLIDE1({ section }) {
 
         // ───── Логотипы
         tl.to([astana, tomorrow], {
-            opacity: 1,
+            autoAlpha: 1,
             scale: 1,
             rotation: 360,
             stagger: 0.2,
             duration: 0.6,
-            ease: "steps(8)"
+            ease: "back.out(1.7)" // Changed from steps(8) for smoothness
         }, ANIMATIONS.SUBTITLE_DELAY);
 
         // ───── Пауза
@@ -106,69 +107,76 @@ export function SLIDE1({ section }) {
 
         // ───── Уход текста
         tl.to(textBlocks[0], {
-            opacity: 0,
-            scale: 0.8,
-            duration: 0.4,
-            ease: "steps(4)"
+            autoAlpha: 0,
+            scale: 0.9,
+            duration: 0.5,
+            ease: "power2.in"
         });
 
         // ───── Появление системных правил
         if (systemRules && rules.length > 0) {
-            // FIX: Делаем родительский контейнер видимым
+            console.log("SLIDE1: Showing Rules...");
+            // Smoothly show the parent container first
             if (textBlocks[1]) {
-                tl.set(textBlocks[1], {
-                    opacity: 1,
-                    visibility: "visible"
+                tl.to(textBlocks[1], {
+                    autoAlpha: 1,
+                    duration: 0.5
                 });
             }
 
-            tl.to(systemRules, {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                ease: "power2.out"
-            });
+            // IMPORTANT: If systemRules was hidden in reset, we MUST show it
+            tl.to(systemRules, { autoAlpha: 1, duration: 0.1 }, "<");
 
-            if (rulesTitle) {
+            if (rulesTitle && ruleChars.length > 0) {
+                tl.to(ruleChars, {
+                    autoAlpha: 1,
+                    y: 0,
+                    stagger: 0.03,
+                    duration: 0.4,
+                    ease: "power2.out"
+                }, "-=0.2");
+            } else if (rulesTitle) {
                 tl.to(rulesTitle, {
-                    opacity: 1,
+                    autoAlpha: 1,
                     scale: 1,
                     y: 0,
-                    duration: 1,
-                    ease: "power2.out"
+                    duration: 0.8,
+                    ease: "back.out(1.5)"
                 }, "-=0.2");
             }
 
             tl.to(rules, {
-                opacity: 1,
+                autoAlpha: 1,
                 x: 0,
+                y: 0,
                 scale: 1,
-                stagger: 0.2,
+                stagger: 0.4,
                 duration: 0.8,
-                ease: "power2.out"
-            }, "-=0.2");
+                ease: "power3.out"
+            }, "-=0.3");
 
             // ───── Пауза для чтения
             tl.to({}, { duration: 1.5 });
 
             // ───── Скрытие правил
             tl.to([systemRules, rulesTitle], {
-                opacity: 0,
+                autoAlpha: 0,
                 y: -20,
                 duration: 0.5
             });
-            tl.to(rules, { opacity: 0, duration: 0.3 }, "<");
-            tl.set([systemRules, rulesTitle, rules], { display: "none" }); // Remove from flow
+            tl.to(rules, { autoAlpha: 0, duration: 0.3 }, "<");
+            tl.set([systemRules, rulesTitle, rules], { display: "none" });
 
             // ───── Появление обычных фото (Life, Work, etc)
             if (photosGeneral && photoItemsGeneral.length > 0) {
-                tl.set(photosGeneral, { display: "flex", visibility: "visible" });
-                tl.to(photosGeneral, { opacity: 1, duration: 0.5 });
+                console.log("SLIDE1: Showing General Photos...");
+                tl.set(photosGeneral, { display: "flex", autoAlpha: 0 });
+                tl.to(photosGeneral, { autoAlpha: 1, duration: 0.5 });
 
                 tl.to(photoItemsGeneral, {
-                    opacity: 1,
+                    autoAlpha: 1,
                     y: 0,
-                    stagger: 0.6, // "не торопи" -> slow stagger
+                    stagger: 0.6,
                     duration: 1.0,
                     ease: ANIMATIONS.EASE_OUT
                 });
@@ -178,7 +186,7 @@ export function SLIDE1({ section }) {
 
                 // Hide General Photos
                 tl.to(photoItemsGeneral, {
-                    opacity: 0,
+                    autoAlpha: 0,
                     y: -20,
                     duration: 0.5,
                     stagger: 0.1
@@ -188,11 +196,12 @@ export function SLIDE1({ section }) {
 
             // ───── Появление фото стаффа (Staff)
             if (photosStuff && photoItemsStuff.length > 0) {
-                tl.set(photosStuff, { display: "flex", visibility: "visible" });
-                tl.to(photosStuff, { opacity: 1, duration: 0.5 });
+                console.log("SLIDE1: Showing Staff Photos...");
+                tl.set(photosStuff, { display: "flex", autoAlpha: 0 });
+                tl.to(photosStuff, { autoAlpha: 1, duration: 0.5 });
 
                 tl.to(photoItemsStuff, {
-                    opacity: 1,
+                    autoAlpha: 1,
                     y: 0,
                     stagger: 0.6,
                     duration: 1.0,
