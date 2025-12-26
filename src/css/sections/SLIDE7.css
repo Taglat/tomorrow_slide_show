@@ -1,5 +1,11 @@
+#SLIDE7 {
+    display: flex;
+    align-items: center;
+
+}
 #SLIDE7 .summary {
-    max-width: 700px;
+    max-width: 700px;   /* нужная ширина */
+    width: 100%;
 }
 
 #SLIDE7 .stats {
@@ -16,4 +22,11 @@
 #SLIDE7 .num {
     color: #00ffcc;
     text-shadow: 0 0 6px #00ffcc;
+}
+
+.SLIDE7 .summary-photos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 900px;
 }

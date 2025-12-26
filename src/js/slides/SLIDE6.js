@@ -3,7 +3,7 @@ import { prepareTitle } from "./utils";
 
 export function SLIDE6({ section }) {
     return new Promise(resolve => {
-        console.log("SLIDE6");
+        console.log("SLIDE6 Праздники");
 
         const tl = gsap.timeline({ onComplete: resolve });
 
@@ -16,7 +16,7 @@ export function SLIDE6({ section }) {
         const chars = title.querySelectorAll(".char");
 
         if (!chars.length || !photos.length) {
-            console.warn("SLIDE7: missing elements");
+            console.warn("SLIDE6: missing elements");
             resolve();
             return;
         }
@@ -30,9 +30,9 @@ export function SLIDE6({ section }) {
         gsap.set(photos, {
             opacity: 0,
             scale: 0.5,
-            rotation: () => gsap.utils.random(-20, 20),
-            x: () => gsap.utils.random(0, window.innerWidth - 200),
-            y: () => gsap.utils.random(0, window.innerHeight - 160)
+            rotation: () => gsap.utils.random(-10, 10),
+            x: 0,
+            y: 0
         });
 
         // ─────────────────────────────

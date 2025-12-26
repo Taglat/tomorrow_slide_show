@@ -3,114 +3,91 @@ import { prepareTitle } from "./utils";
 
 export function SLIDE5({ section }) {
     return new Promise(resolve => {
-        console.log("SLIDE5");
-
-        const tl = gsap.timeline({
-            onComplete: resolve
-        });
+        console.log("SLIDE5: Тимбилдинг");
 
         const title = section.querySelector(".title");
         const subtitle = section.querySelector(".subtitle");
         const photos = section.querySelectorAll(".c_photo");
 
-        // ─────────────────────────────
-        // PREPARE
-        // ─────────────────────────────
         prepareTitle(title);
-
         const chars = title.querySelectorAll(".char");
 
-        if (!chars.length || !photos.length) {
-            console.warn("SLIDE6: missing elements");
-            resolve();
-            return;
-        }
-
+        // ─────────────────────────────
         // RESET
+        // ─────────────────────────────
         gsap.set(chars, {
             opacity: 0,
-            y: 20
+            scale: 0.5,
+            y: -20,
+            transformOrigin: "center center"
         });
 
-        gsap.set(subtitle, {
-            opacity: 0,
-            scale: 0.8
-        });
+        gsap.set(subtitle, { opacity: 0, y: 20 });
 
+        // Remove old absolute positioning logic
         gsap.set(photos, {
-            position: "absolute",
             opacity: 0,
-            scale: 0.6,
-            x: () => gsap.utils.random(-300, 300),
-            y: () => gsap.utils.random(-200, 200),
-            rotation: () => gsap.utils.random(-30, 30)
+            visibility: "visible",
+            scale: 0.5, // Start small
+            rotation: () => gsap.utils.random(-10, 10), // A bit loose before snapping in
+            y: 100
         });
+
+        const tl = gsap.timeline({ onComplete: resolve });
 
         // ─────────────────────────────
-        // TITLE (быстро, без акцента)
+        // 1. TITLE CONSTRUCTION
         // ─────────────────────────────
         tl.to(chars, {
             opacity: 1,
+            scale: 1,
             y: 0,
-            stagger: 0.015,
-            duration: 0.25,
-            ease: "steps(3)"
+            stagger: 0.03,
+            duration: 0.4,
+            ease: "back.out(1.5)"
         });
 
         // ─────────────────────────────
-        // CHAOTIC ENTRY (движение)
+        // 2. BUILD THE TEAM (Mosaic Snap)
         // ─────────────────────────────
         tl.to(photos, {
             opacity: 1,
             scale: 1,
-            rotation: 0,
-            x: () => gsap.utils.random(
-                80,
-                window.innerWidth - 260
-            ),
-            y: () => gsap.utils.random(
-                120,
-                window.innerHeight - 220
-            ),
-            stagger: 0.15,
-            duration: 0.6,
-            ease: "steps(6)"
-        }, "-=0.1");
-
-        // ─────────────────────────────
-        // GATHER (co-op moment)
-        // ─────────────────────────────
-        tl.to(photos, {
-            x: (i) => (i - (photos.length - 1) / 2) * 60,
+            rotation: 0, // Snap to grid
             y: 0,
-            stagger: 0.05,
-            duration: 0.4,
-            ease: "steps(4)"
-        });
+            stagger: {
+                // grid: [3, 4], // Auto grid detection is hard here due to custom layout spans
+                from: "center",
+                amount: 0.6
+            },
+            duration: 0.8,
+            ease: "elastic.out(1, 0.75)"
+        }, "-=0.2");
 
         // ─────────────────────────────
-        // SUBTITLE (после сборки)
+        // 3. PROMISE (Subtitle)
         // ─────────────────────────────
         tl.to(subtitle, {
             opacity: 1,
-            scale: 1,
-            duration: 0.3,
-            ease: "steps(3)"
-        });
+            y: 0,
+            duration: 0.4,
+            ease: "power2.out"
+        }, "-=0.2");
 
         // ─────────────────────────────
-        // MICRO IDLE (жизнь)
+        // 4. HEARTBEAT (Unity)
         // ─────────────────────────────
         gsap.to(photos, {
-            y: "+=6",
+            scale: 0.98,
+            duration: 1.5,
             yoyo: true,
             repeat: -1,
+            ease: "sine.inOut",
             stagger: {
-                each: 0.2,
-                from: "center"
-            },
-            duration: 0.6,
-            ease: "steps(2)"
+                from: "center",
+                amount: 0.5
+            }
         });
+
     });
 }

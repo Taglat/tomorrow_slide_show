@@ -1,5 +1,21 @@
-#SLIDE7 {
-    overflow: hidden;
+#SLIDE6 {
+    flex-direction: column;
 }
 
-#SLIDE7 .c_photo {}
+#SLIDE6 .party-photos {
+    display: flex;
+    gap: 16px;
+
+    width: 90%;
+    max-width: 1200px;
+    height: 50vh;
+    margin-top:40px;
+}
+
+#SLIDE6 .c_photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    /* Animated later */
+}

@@ -1,32 +1,105 @@
 .SLIDE4 {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 32px;
-    padding: 40px;
+    align-items: center;
+    justify-content: start;
+    gap: 70px;
 }
 
 .SLIDE4 .sport-header {
     text-align: center;
-    z-index: 5;
+    z-index: 10;
 }
 
 .SLIDE4 .subtitle {
     margin-top: 12px;
     font-size: 14px;
-    color: #aaa;
+    color: var(--px-muted);
 }
 
-.SLIDE4 .sport-photos {
+.SLIDE4 .sport-gallery {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    max-width: 900px;
-    margin: 0 auto;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 140px;
+    /* gap: 20px; */
+    max-width: 1100px;
+    width: 100%;
+
+    /* Perspective for 3D vibes */
+    perspective: 1000px;
 }
+
+.SLIDE4 .sport-card {
+    position: relative;
+    border: 4px solid #fff;
+    box-shadow: 6px 6px 0 #000;
+    overflow: hidden;
+    background: #000;
+
+    transform: skewX(-6deg);
+    transform-origin: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    /* Grid default: auto */
+}
+
+/* --- Layout Logic --- */
+
+/* Tall cards span 2 rows */
+.SLIDE4 .sport-card.tall {
+    grid-row: span 2;
+}
+
+/* Explicitly place the right tower */
+.SLIDE4 .sport-card.pos-right {
+    grid-column: 4;
+    grid-row: 1 / span 2;
+    /* Force it to start at top right */
+}
+
+/* 
+   Football is 1st child -> Tall -> Col 1, Row 1-2 (default flow).
+   eSports is 2nd child -> Tall Right -> Col 4, Row 1-2.
+   Others (3,4,5,6) -> Will flow into Col 2 and Col 3.
+   Result:
+   [Tall] [Reg] [Reg] [Tall]
+   [Tall] [Reg] [Reg] [Tall]
+   Perfect 4x2 grid.
+*/
 
 .SLIDE4 .c_photo {
     width: 100%;
-    height: 180px;
-    image-rendering: pixelated;
+    height: 100%;
+    object-fit: cover;
+
+    /* Counter-skew */
+    transform: skewX(6deg) scale(1.1);
+    transition: transform 0.4s ease-out;
+    filter: saturate(0.8) contrast(1.2);
+}
+
+.SLIDE4 .sport-card:hover .c_photo {
+    transform: skewX(6deg) scale(1.2);
+    filter: saturate(1.2) contrast(1.2);
+}
+
+.SLIDE4 .sport-label {
+    position: absolute;
+    bottom: 10px;
+    left: -5px;
+
+    background: #e60000;
+    color: #fff;
+    padding: 6px 16px;
+
+    font-size: 14px;
+    font-family: "Press Start 2P", monospace;
+    text-transform: uppercase;
+
+    transform: skewX(6deg);
+    box-shadow: 3px 3px 0 #000;
+    border: 2px solid #fff;
+    z-index: 5;
 }

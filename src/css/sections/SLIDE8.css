@@ -1,3 +1,10 @@
+#SLIDE8 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 60px;
+}
+
 #SLIDE8 .future {
     text-align: center;
 }

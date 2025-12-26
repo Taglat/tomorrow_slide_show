@@ -1,10 +1,11 @@
 .SLIDE1 {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
-    padding: 40px;
     position: relative;
 }
+
+
 
 .SLIDE1 .text-block {
     text-align: center;
@@ -32,12 +33,90 @@
     filter: drop-shadow(0 0 8px #fff);
 }
 
-.SLIDE1 .photos {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    max-width: 1000px;
+/* Photos Grid */
+.SLIDE1 .photos,
+.SLIDE1 .photos_stuff {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Center somewhat */
+
+    width: 90%;
+    max-width: 1100px;
+    z-index: 20;
+
+    opacity: 0;
+    visibility: hidden;
+}
+
+.SLIDE1 .photos_stuff {
+    top: 40%;
+    /* top: 60%; */
+    /* Slightly lower or same? - Let's keep them separate in logic if needed but visually similar */
+    /* Photos Stuff will be shown separately or instead? 
+       User said "Simple photos AND staff photos". 
+       So maybe we show one group then another, or all together? 
+       Let's style them to be centered. The JS will handle showing/hiding.
+    */
+    display: none;
+    /* JS will toggle flex */
+}
+
+.SLIDE1 .staff-group-title {
     width: 100%;
+    text-align: center;
+    color: #00ffcc;
+    /* Matches theme */
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 0 #000;
+}
+
+
+.SLIDE1 .photo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #000;
+    padding: 8px;
+    border: 2px solid #fff;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+    margin: 0;
+}
+
+/* General Photos (Larger) */
+.SLIDE1 .photos .photo-item img {
+    height: 250px;
+    width: auto;
+    object-fit: cover;
+    margin-bottom: 8px;
+    border: 1px solid #333;
+    display: block;
+}
+
+/* Staff Photos (Smaller/Normal) */
+.SLIDE1 .photos_stuff .photo-item img {
+    height: 300px;
+    width: auto;
+    object-fit: cover;
+    margin-bottom: 8px;
+    border: 1px solid #333;
+    display: block;
+}
+
+.SLIDE1 .photo-item figcaption {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    color: #00ff88;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 4px;
 }
 
 .SLIDE1 .c_photo {
@@ -55,4 +134,43 @@
 .SLIDE1 .c_photo {
     opacity: 0;
     visibility: hidden;
+}
+
+/* Updated Rules Styles */
+.SLIDE1 .rules-title {
+    font-size: 28px;
+    margin-bottom: 40px;
+    color: #00ffcc;
+    text-shadow: 4px 4px 0 #000;
+    opacity: 0;
+}
+
+.SLIDE1 .system-rules {
+    list-style: none;
+    text-align: left;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.SLIDE1 .rule {
+    font-size: 22px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    /* JS handles visibility */
+
+    background: rgba(0, 0, 0, 0.6);
+    padding: 16px 24px;
+    box-shadow: 4px 4px 0 #000;
+    border: 2px solid #fff;
+    transform-origin: left center;
+}
+
+.SLIDE1 .rule .icon {
+    color: #00ff88;
+    font-size: 28px;
+    flex-shrink: 0;
 }

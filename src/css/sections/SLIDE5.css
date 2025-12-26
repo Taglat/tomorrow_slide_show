@@ -1,10 +1,66 @@
-#SLIDE5 {
-    overflow: hidden;
+.SLIDE5 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
 }
 
-#SLIDE5 .team-field {
-    position: absolute;
-    inset: 0;
+.SLIDE5 .title {
+    margin-bottom: 40px;
+    text-align: center;
+    z-index: 10;
 }
 
-#SLIDE5 .c_photo {}
+.SLIDE5 .subtitle {
+    margin-top: 30px;
+    color: var(--px-muted);
+}
+
+.SLIDE5 .team-field {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 140px;
+    gap: 16px;
+    max-width: 1000px;
+    width: 100%;
+
+    /* Remove absolute inset */
+    position: relative;
+}
+
+.SLIDE5 .c_photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    border: 4px solid #fff;
+    box-shadow: 4px 4px 0 #000;
+    image-rendering: pixelated;
+
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* --- Mosaic Layout (7 items) --- */
+/*
+   [ 1 ][ 1 ][ 2 ][ 3 ]
+   [ 1 ][ 1 ][ 4 ][ 5 ]
+   [ 6 ][ 6 ][ 7 ][ 7 ]
+*/
+
+.SLIDE5 .c_photo:nth-child(1) {
+    grid-column: 1 / span 2;
+    grid-row: 1 / span 2;
+}
+
+/* 2, 3, 4, 5 auto flow into col 3,4 row 1,2 */
+
+.SLIDE5 .c_photo:nth-child(6) {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+}
+
+.SLIDE5 .c_photo:nth-child(7) {
+    grid-column: 3 / span 2;
+    grid-row: 3;
+}

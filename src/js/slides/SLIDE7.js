@@ -3,7 +3,7 @@ import { prepareTitle } from "./utils";
 
 export function SLIDE7({ section }) {
     return new Promise(resolve => {
-        console.log("SLIDE7");
+        console.log("SLIDE7: Статистика");
 
         const tl = gsap.timeline({ onComplete: resolve });
 

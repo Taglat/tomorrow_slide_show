@@ -3,7 +3,7 @@ import { prepareTitle } from "./utils";
 
 export function SLIDE8({ section }) {
     return new Promise(resolve => {
-        console.log("SLIDE8");
+        console.log("SLIDE8 End");
 
         const tl = gsap.timeline({ onComplete: resolve });
 

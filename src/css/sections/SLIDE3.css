@@ -1,34 +1,74 @@
 .SLIDE3 {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 40px;
-    padding: 40px;
+    /* justify-content: center; */
+    align-items: center;
 }
 
 .SLIDE3 .events-header {
     text-align: center;
-    z-index: 5;
+    z-index: 10;
+    position: relative;
+    margin-bottom: 20px;
 }
 
 .SLIDE3 .subtitle {
-    margin-top: 16px;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--px-muted);
 }
 
-.SLIDE3 .event-strip {
-    display: flex;
-    gap: 20px;
-    overflow: hidden;
-    justify-content: center;
+.SLIDE3 .event-stack {
+    position: relative;
+    width: 360px;
+    height: 380px;
+    /* Polaroid style ratio */
 }
 
-.SLIDE3 .event-photo {
-    width: 240px;
-    height: 160px;
+.SLIDE3 .event-card {
+    margin-top: 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    border: 12px solid #fff;
+    /* Bottom border bigger for polaroid effect */
+    border-bottom-width: 60px;
+
+    box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.5),
+        4px 4px 0 #000;
+
+    background: #fff;
+    transform-origin: center center;
+
+    display: flex;
+    flex-direction: column;
+
+    opacity: 0;
+    /* JS handles visibility */
+    visibility: hidden;
+}
+
+.SLIDE3 .c_photo {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border: 3px solid #fff;
-    box-shadow: 4px 4px 0 #000;
     image-rendering: pixelated;
+    background: #000;
+}
+
+.SLIDE3 .event-caption {
+    position: absolute;
+    bottom: -50px;
+    /* On the white border area */
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    color: #000;
+    font-family: "Press Start 2P", monospace;
+    text-transform: uppercase;
+    /* No padding needed as it centers in the border area visually */
 }
